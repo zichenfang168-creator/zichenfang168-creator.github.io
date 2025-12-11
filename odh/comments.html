@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments - Embrace Hong Kong</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="comments.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-content">
+            <h1 class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">EMBRACE HONG KONG</h1>
+            <div class="header-buttons" id="authButtons">
+                <button class="header-btn" onclick="openLoginForm()">Login</button>
+                <button class="header-btn" onclick="openRegisterForm()">Register</button>
+            </div>
+            <div class="header-buttons" id="userControls" style="display: none;">
+                <span id="userGreeting" style="margin-right: 15px; color: white;">Welcome</span>
+                <button class="header-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content comment-container">
+        <h2>Community Comments</h2>
+        
+        <!-- Comment Input Section (Only visible to logged in users) -->
+        <div id="commentInputSection" class="comment-input-section" style="display: none;">
+            <h3>Leave a Comment</h3>
+            <textarea id="commentText" placeholder="Share your thoughts about your trip..."></textarea>
+            <button class="submit-comment-btn" onclick="submitComment()">Post Comment</button>
+        </div>
+
+        <div id="loginPrompt" class="login-prompt">
+            <p>Please <a href="#" onclick="openLoginForm()">login</a> or <a href="#" onclick="openRegisterForm()">register</a> to leave a comment.</p>
+        </div>
+
+        <!-- Comments List -->
+        <div id="commentsList" class="comments-list">
+            <!-- Comments will be loaded here -->
+            <p>Loading comments...</p>
+        </div>
+    </div>
+
+    <!-- Register Popup Form -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegisterForm()">&times;</span>
+            <h2>Register</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="nickname">Nickname:</label>
+                    <input type="text" id="nickname" name="nickname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="accountType">Account Type:</label>
+                    <select id="accountType" name="accountType" onchange="toggleBusinessFields()">
+                        <option value="user">Regular User</option>
+                        <option value="business">Business Account (Shop Owner)</option>
+                    </select>
+                </div>
+                <div id="businessFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="businessName">Business Name:</label>
+                        <input type="text" id="businessName" name="businessName">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Popup Form -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginForm()">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginNickname">Nickname:</label>
+                    <input type="text" id="loginNickname" name="loginNickname" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="supabase.js"></script>
+    <script src="comments.js"></script>
+</body>
+</html>
+

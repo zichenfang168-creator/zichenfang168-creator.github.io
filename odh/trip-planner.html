@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner - Embrace Hong Kong</title>
+    <link rel="stylesheet" href="trip-planner.css">
+    <script src="supabase.js"></script>
+    <script src="gemini.js"></script>
+</head>
+<body>
+    <!-- Upper Part (15%) -->
+    <div class="header-section">
+        <div class="header-content">
+            <h1 class="logo">EMBRACE HONG KONG</h1>
+            <div class="header-buttons">
+                <button class="header-btn" onclick="openComment()">Comment</button>
+                <span id="auth-buttons">
+                    <button class="header-btn" onclick="openLoginForm()">Login</button>
+                    <button class="header-btn" onclick="openRegisterForm()">Register</button>
+                </span>
+                <span id="welcome-message" style="display: none; color: white; font-weight: bold; align-items: center; gap: 10px;">
+                    Welcome <span id="user-nickname"></span>
+                    <button class="header-btn" onclick="handleLogout()">Logout</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lower Part (85%) -->
+    <div class="main-section">
+        <!-- Part 1: Date and People Selection -->
+        <div class="section part1">
+            <h2>Plan Your Trip</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="arriveDate">Arrive Date:</label>
+                    <input type="date" id="arriveDate" name="arriveDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="departureDate">Departure Date:</label>
+                    <input type="date" id="departureDate" name="departureDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="numPeople">How Many:</label>
+                    <input type="number" id="numPeople" name="numPeople" min="1" value="1" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 2: Tour Type Selection -->
+        <div class="section part2">
+            <h2>Select Tour Type</h2>
+            <div class="tour-types">
+                <div class="tour-box" data-tour="panda">
+                    <h3>Panda Tour</h3>
+                </div>
+                <div class="tour-box" data-tour="eco">
+                    <h3>Eco Tour</h3>
+                </div>
+                <div class="tour-box" data-tour="sports">
+                    <h3>Sports Tour</h3>
+                </div>
+                <div class="tour-box" data-tour="concert">
+                    <h3>Concert Tour</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 3: Additional Info (placeholder) -->
+        <div class="section part3">
+            <h2>Additional Preferences</h2>
+            <p>Tell us more about your preferences (optional)</p>
+            <textarea id="preferences" placeholder="Any special requests or preferences..."></textarea>
+        </div>
+
+        <!-- Part 4: AI Trip Planner Button and Results -->
+        <div class="section part4">
+            <button class="ai-planner-btn" onclick="generateTripPlan()">
+                AI Trip Planner
+            </button>
+            <div id="loading" class="loading" style="display: none;">
+                <p>Generating your personalized trip plan with AI...</p>
+            </div>
+            <div id="results" class="results" style="display: none;">
+                <h3>Your AI-Generated Trip Plan</h3>
+                <div id="tripPlanContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tour type selection
+        document.querySelectorAll('.tour-box').forEach(box => {
+            box.addEventListener('click', function() {
+                // Toggle selection
+                this.classList.toggle('selected');
+            });
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('arriveDate').setAttribute('min', today);
+        document.getElementById('departureDate').setAttribute('min', today);
+
+        // Ensure departure date is after arrive date
+        document.getElementById('arriveDate').addEventListener('change', function() {
+            const arriveDate = this.value;
+            if (arriveDate) {
+                document.getElementById('departureDate').setAttribute('min', arriveDate);
+            }
+        });
+
+        function generateTripPlan() {
+            const arriveDate = document.getElementById('arriveDate').value;
+            const departureDate = document.getElementById('departureDate').value;
+            const numPeople = document.getElementById('numPeople').value;
+            const selectedTours = Array.from(document.querySelectorAll('.tour-box.selected'))
+                .map(box => box.dataset.tour);
+            const preferences = document.getElementById('preferences').value;
+
+            if (!arriveDate || !departureDate) {
+                alert('Please select both arrive and departure dates.');
+                return;
+            }
+
+            if (selectedTours.length === 0) {
+                alert('Please select at least one tour type.');
+                return;
+            }
+
+            // Here you can integrate with Gemini API
+            console.log('Trip Plan Request:', {
+                arriveDate,
+                departureDate,
+                numPeople,
+                selectedTours,
+                preferences
+            });
+
+            alert('Generating your AI trip plan... (Check console for details)');
+        }
+    </script>
+
+    <!-- Register Popup Form -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegisterForm()">&times;</span>
+            <h2>Register</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="nickname">Nickname:</label>
+                    <input type="text" id="nickname" name="nickname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Popup Form -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginForm()">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginNickname">Nickname:</label>
+                    <input type="text" id="loginNickname" name="loginNickname" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://smlmbqzperdkazkmuroy.supabase.co';
+        const supabaseAnonKey = 'sb_publishable__QYASfvhAe8dre9r9Hccfw_ocyG6eKA';
+        const supabase = new SupabaseClient(supabaseUrl, supabaseAnonKey);
+
+        // Initialize Gemini Client
+        let tripAgent;
+        
+        function initializeGemini() {
+            const apiKey = 'AIzaSyBJ8MSLG8SllOhQvJCsW6ZY9bJtuGMHMcY'; // Use the key from ai-trip-planner.html
+            if (apiKey) {
+                tripAgent = new TripPlannerAgent(apiKey);
+                return true;
+            }
+            return false;
+        }
+
+        // Check session on load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            initializeGemini();
+        });
+
+        function checkSession() {
+            const userJson = localStorage.getItem('tripPlannerUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                // Update UI
+                document.getElementById('auth-buttons').style.display = 'none';
+                document.getElementById('welcome-message').style.display = 'flex';
+                document.getElementById('user-nickname').textContent = user.nickname || user.email;
+            } else {
+                document.getElementById('auth-buttons').style.display = 'inline-block';
+                document.getElementById('welcome-message').style.display = 'none';
+            }
+        }
+
+        // ... [rest of auth functions are unchanged] ...
+
+        async function generateTripPlan() {
+            const arriveDate = document.getElementById('arriveDate').value;
+            const departureDate = document.getElementById('departureDate').value;
+            const numPeople = document.getElementById('numPeople').value;
+            const selectedTours = Array.from(document.querySelectorAll('.tour-box.selected'))
+                .map(box => box.dataset.tour);
+            const preferences = document.getElementById('preferences').value;
+
+            if (!arriveDate || !departureDate) {
+                alert('Please select both arrive and departure dates.');
+                return;
+            }
+
+            if (selectedTours.length === 0) {
+                alert('Please select at least one tour type.');
+                return;
+            }
+
+            // Initialize Gemini if not already done
+            if (!tripAgent) {
+                if (!initializeGemini()) {
+                    alert('API key is required to generate trip plan.');
+                    return;
+                }
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            try {
+                const response = await tripAgent.generateItinerary({
+                    arriveDate,
+                    departureDate,
+                    numPeople,
+                    selectedTours,
+                    preferences
+                });
+
+                // Display results
+                document.getElementById('tripPlanContent').innerHTML = '<pre>' + response.replace(/\n/g, '<br>') + '</pre>';
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
+
+                // Scroll to results
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error generating trip plan:', error);
+                alert('Error generating trip plan: ' + error.message);
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function openRegisterForm() {
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function closeRegisterForm() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const nickname = document.getElementById('nickname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                // Check if user already exists
+                const existingUsers = await supabase.query('users', { nickname: nickname });
+                if (existingUsers && existingUsers.length > 0) {
+                    alert('Nickname already taken');
+                    return;
+                }
+
+                const newUser = {
+                    nickname: nickname,
+                    email: email,
+                    password: password,
+                    created_at: new Date().toISOString()
+                };
+
+                // Register with Supabase Custom Users Table
+                const result = await supabase.insert('users', newUser);
+                
+                // Supabase REST insert returns array of inserted records
+                if (result && result.length > 0) {
+                    const userInfo = result[0];
+                    localStorage.setItem('tripPlannerUser', JSON.stringify(userInfo));
+                    
+                    alert('Registration successful!');
+                    closeRegisterForm();
+                    checkSession(); // Update UI
+                } else {
+                     // Fallback in case response format varies
+                     localStorage.setItem('tripPlannerUser', JSON.stringify(newUser));
+                     alert('Registration request sent. Logging you in.');
+                     closeRegisterForm();
+                     checkSession();
+                }
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed: ' + error.message);
+            }
+        }
+
+        function openLoginForm() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginForm() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const nickname = document.getElementById('loginNickname').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                // Login using Custom Users Table
+                const users = await supabase.query('users', { nickname: nickname, password: password });
+                
+                if (users && users.length > 0) {
+                    const userInfo = users[0];
+                    localStorage.setItem('tripPlannerUser', JSON.stringify(userInfo));
+
+                    alert('Login successful!');
+                    closeLoginForm();
+                    checkSession(); // Update UI
+                } else {
+                    throw new Error('Invalid nickname or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed: ' + error.message);
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('tripPlannerUser');
+            localStorage.removeItem('tripPlannerSession');
+            supabase.signOut();
+            checkSession();
+            alert('Logged out successfully.');
+        }
+
+        function openComment() {
+            window.location.href = 'comments.html';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const registerModal = document.getElementById('registerModal');
+            const loginModal = document.getElementById('loginModal');
+            if (event.target == registerModal) {
+                closeRegisterForm();
+            }
+            if (event.target == loginModal) {
+                closeLoginForm();
+            }
+        }
+    </script>
+</body>
+</html>
+

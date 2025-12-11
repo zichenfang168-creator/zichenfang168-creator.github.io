@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<script>
+    
+</script>
+<body>
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-content">
+            <h1 class="logo">EMBRACE HONG KONG</h1>
+            <div class="header-buttons">
+                <button class="header-btn" onclick="openComment()">Comment</button>
+                <button class="header-btn" onclick="openLoginForm()">Login</button>
+                <button class="header-btn" onclick="openRegisterForm()">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <script src="index.js"></script>
+        <script>
+            alert(greeting);
+        </script>
+        <h1>Hello World</h1>
+        <h1>welcome to embrace Hong Kong,a powerful trip planning platform powered by Gemini</h1>
+        <p>we focus on 4 major types of activities: 
+            <ul>
+                <li>panda tour</li>
+                <li>eco tour</li>
+                <li>sports tour</li>
+                <li>concert tour</li>
+            </ul>
+        <p>wanna try? Start planning your trip now!</p>
+        <button class="next-btn" onclick="window.location.href='trip-planner.html'">
+            Next
+        </button>
+        </p>
+    </div>
+
+    <!-- Register Popup Form -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegisterForm()">&times;</span>
+            <h2>Register</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="nickname">Nickname:</label>
+                    <input type="text" id="nickname" name="nickname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Popup Form -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginForm()">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginNickname">Nickname:</label>
+                    <input type="text" id="loginNickname" name="loginNickname" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openRegisterForm() {
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function closeRegisterForm() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const nickname = document.getElementById('nickname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Here you can add your registration logic
+            console.log('Register:', { nickname, email, password });
+            alert('Registration successful!');
+            closeRegisterForm();
+        }
+
+        function openComment() {
+            window.location.href = 'comments.html';
+        }
+
+        function openLoginForm() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginForm() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const nickname = document.getElementById('loginNickname').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Here you can add your login logic
+            console.log('Login:', { nickname, password });
+            alert('Login successful!');
+            closeLoginForm();
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const registerModal = document.getElementById('registerModal');
+            const loginModal = document.getElementById('loginModal');
+            if (event.target == registerModal) {
+                closeRegisterForm();
+            }
+            if (event.target == loginModal) {
+                closeLoginForm();
+            }
+        }
+    </script>
+</body>
+</html>
+
