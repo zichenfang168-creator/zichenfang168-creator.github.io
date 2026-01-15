@@ -1,3 +1,4 @@
+/* File updated to change header background to #263238 with white text, lower area background to #E8F5E9, upper header buttons to #8D6E63, main buttons to #FF5252 (text color kept white). Other colors unchanged. */
 * {
     margin: 0;
     padding: 0;
@@ -15,7 +16,8 @@ body {
 /* Upper Part (15%) */
 .header-section {
     height: 15vh;
-    background-color: ##263238;
+    background-color: #263238;
+    color: #ffffff;
     display: flex;
     align-items: center;
     padding: 0 30px;
@@ -44,7 +46,7 @@ body {
 .header-btn {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #E8F5E9;
+    background-color: #8D6E63;
     color: white;
     border: none;
     border-radius: 5px;
@@ -64,6 +66,7 @@ body {
     flex-direction: column;
     gap: 20px;
     overflow-y: auto;
+    background-color: #E8F5E9;
 }
 
 .section {
@@ -119,7 +122,7 @@ body {
     gap: 20px;
 }
 
-.tour-box {
+tour-box {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 30px;
@@ -130,12 +133,12 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.tour-box:hover {
+tour-box:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.tour-box.selected {
+tour-box.selected {
     background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
@@ -178,7 +181,7 @@ body {
     padding: 18px 50px;
     font-size: 20px;
     font-weight: bold;
-    background: linear-gradient(135deg, #4CAF50 0%, #FF5252 100%);
+    background-color: #FF5252;
     color: white;
     border: none;
     border-radius: 10px;
@@ -292,7 +295,7 @@ body {
 .submit-btn {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #FF5252;
     color: white;
     border: none;
     border-radius: 5px;
