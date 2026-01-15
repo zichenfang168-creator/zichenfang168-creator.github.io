@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #87CEEB; /* Sky blue */
+    background-color: #8D6E63; /* Sky blue */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -15,7 +15,7 @@ body {
 /* Upper Part (15%) */
 .header-section {
     height: 15vh;
-    background-color: #87CEEB;
+    background-color: ##263238;
     display: flex;
     align-items: center;
     padding: 0 30px;
@@ -32,7 +32,7 @@ body {
 .logo {
     font-size: 28px;
     font-weight: bold;
-    color: #fff;
+    color: #FAFAFA;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -44,7 +44,7 @@ body {
 .header-btn {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #E8F5E9;
     color: white;
     border: none;
     border-radius: 5px;
@@ -101,7 +101,7 @@ body {
 .part1 input {
     width: 100%;
     padding: 12px;
-    border: 2px solid #ddd;
+    border: 2px solid #8D6E63;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s;
@@ -109,7 +109,7 @@ body {
 
 .part1 input:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #66BB6A;
 }
 
 /* Part 2: Tour Type Selection */
@@ -136,7 +136,7 @@ body {
 }
 
 .tour-box.selected {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
 }
@@ -178,7 +178,7 @@ body {
     padding: 18px 50px;
     font-size: 20px;
     font-weight: bold;
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    background: linear-gradient(135deg, #4CAF50 0%, #FF5252 100%);
     color: white;
     border: none;
     border-radius: 10px;
