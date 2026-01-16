@@ -88,7 +88,27 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // Make tour boxes keyboard accessible and toggle selection on click / Enter / Space
+        document.querySelectorAll('.tour-box').forEach(box => {
+        // add accessible role and tabindex if not present
+        if (!box.hasAttribute('role')) box.setAttribute('role', 'button');
+        if (!box.hasAttribute('tabindex')) box.setAttribute('tabindex', '0');
 
+        box.addEventListener('click', function () {
+          this.classList.toggle('selected');
+        });
+
+        box.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.classList.toggle('selected');
+          }
+        });
+      });
+    });
+    </script>
     <script>
         // Tour type selection
         document.querySelectorAll('.tour-box').forEach(box => {
